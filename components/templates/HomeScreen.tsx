@@ -1,19 +1,12 @@
 import { ProductCard } from "@/components/molecules/ProductCard";
 import { THEME } from "@/lib/color-constants";
 import { Product } from "@/lib/types";
-import {
-  FlatList,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Platform, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-type HomeScreenprops = { navigation: any; products: Product[] };
+type HomeScreenprops = { products: Product[] };
 
-export const HomeScreen = ({ navigation, products }: HomeScreenprops) => {
+export const HomeScreen = ({ products }: HomeScreenprops) => {
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
@@ -21,13 +14,6 @@ export const HomeScreen = ({ navigation, products }: HomeScreenprops) => {
           <Text style={styles.headerTitle}>GreenDrop</Text>
           <Text style={styles.headerSubtitle}>Sustainable Shopping</Text>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Admin")}
-          style={styles.headerButton}
-          activeOpacity={0.7}
-        >
-          <Text style={styles.headerButtonText}>Admin</Text>
-        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -45,10 +31,10 @@ export const HomeScreen = ({ navigation, products }: HomeScreenprops) => {
 };
 
 const styles = StyleSheet.create({
-    safe: {
+  safe: {
     flex: 1,
     backgroundColor: THEME.cream,
-    paddingTop: Platform.OS === 'android' ? 24 : 0,
+    paddingTop: Platform.OS === "android" ? 24 : 0,
   },
   header: {
     padding: 20,
