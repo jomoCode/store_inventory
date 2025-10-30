@@ -34,6 +34,7 @@ async function updateProduct(product: Product, callback: () => void) {
   callback();
 }
 
+
 async function deleteProduct(id: string, callback: () => void) {
   if (!db) return;
   await db.runAsync('DELETE FROM products WHERE id = ?;', [id]);
