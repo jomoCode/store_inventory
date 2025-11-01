@@ -22,16 +22,14 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ImageInputField } from "../atoms/ImageInput";
 
 type AdminScreenProps = {
   products: Product[];
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
 };
 
-export const  AdminScreen = ({
-  products,
-  setProducts,
-}: AdminScreenProps ) => {
+export const AdminScreen = ({ products, setProducts }: AdminScreenProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [nameInput, setNameInput] = useState("");
@@ -221,17 +219,10 @@ export const  AdminScreen = ({
               />
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Image URL (Optional)</Text>
-              <TextInput
-                value={imageInput}
-                onChangeText={setImageInput}
-                placeholder="https://..."
-                placeholderTextColor="#999"
-                style={styles.input}
-              />
-            </View>
-
+            <ImageInputField
+              imageInput={imageInput}
+              setImageInput={setImageInput}
+            />
             <View style={styles.modalActions}>
               <TouchableOpacity
                 onPress={() => setModalVisible(false)}
@@ -255,26 +246,26 @@ export const  AdminScreen = ({
       </Modal>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-      safe: {
+  safe: {
     flex: 1,
     backgroundColor: THEME.cream,
-    paddingTop: Platform.OS === 'android' ? 24 : 0,
+    paddingTop: Platform.OS === "android" ? 24 : 0,
   },
   header: {
     padding: 20,
     paddingBottom: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: THEME.cream,
   },
 
   headerTitle: {
     fontSize: 28,
-    fontWeight: '800',
+    fontWeight: "800",
     color: THEME.darkGreen,
     letterSpacing: -0.5,
   },
@@ -282,9 +273,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: THEME.green,
     marginTop: 2,
-    fontWeight: '500',
+    fontWeight: "500",
   },
-    adminListContainer: {
+  adminListContainer: {
     padding: 16,
     paddingBottom: 24,
   },
@@ -300,31 +291,31 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   addButtonText: {
-    color: '#fff',
-    fontWeight: '700',
+    color: "#fff",
+    fontWeight: "700",
     fontSize: 15,
   },
-    headerAdmin: {
+  headerAdmin: {
     padding: 20,
     paddingBottom: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: THEME.cream,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(47, 143, 110, 0.1)',
+    borderBottomColor: "rgba(47, 143, 110, 0.1)",
   },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
     padding: 20,
   },
   modalCard: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 20,
     padding: 24,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 10 },
@@ -332,7 +323,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 24,
-    fontWeight: '800',
+    fontWeight: "800",
     marginBottom: 20,
     color: THEME.darkGreen,
   },
@@ -341,22 +332,22 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
     color: THEME.text,
     marginBottom: 6,
   },
   input: {
     borderWidth: 1.5,
-    borderColor: '#e5e5e5',
+    borderColor: "#e5e5e5",
     borderRadius: 12,
     padding: 14,
     fontSize: 16,
-    backgroundColor: '#fafafa',
+    backgroundColor: "#fafafa",
     color: THEME.text,
   },
   modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "flex-end",
     marginTop: 8,
   },
   modalBtn: {
@@ -366,11 +357,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   modalCancel: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: "#f0f0f0",
   },
   modalCancelText: {
     color: THEME.text,
-    fontWeight: '600',
+    fontWeight: "600",
     fontSize: 15,
   },
   modalSave: {
@@ -382,8 +373,8 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   modalSaveText: {
-    color: '#fff',
-    fontWeight: '700',
+    color: "#fff",
+    fontWeight: "700",
     fontSize: 15,
-  }
-})
+  },
+});
