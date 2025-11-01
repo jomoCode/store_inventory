@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { View } from "react-native";
+
 import { HomeScreen } from "@/components/templates/HomeScreen";
-import { initDB, getProductsFromDB } from "@/lib/DB-helpers";
+import { getProductsFromDB, initDB } from "@/lib/DB-helpers";
 import { Product } from "@/lib/types";
 
 export default function HomePage() {
