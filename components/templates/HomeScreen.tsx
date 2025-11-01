@@ -1,12 +1,45 @@
 import { ProductCard } from "@/components/molecules/ProductCard";
 import { THEME } from "@/lib/color-constants";
 import { Product } from "@/lib/types";
-import { FlatList, Platform, StyleSheet, Text, View } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import {
+  FlatList,
+  Platform,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-type HomeScreenprops = { products: Product[] };
+type HomeScreenProps = {
+  products: Product[];
+  onRefresh?: () => void;
+};
 
-export const HomeScreen = ({ products }: HomeScreenprops) => {
+export const HomeScreen = ({ products, onRefresh }: HomeScreenProps) => {
+  const [refreshing, setRefreshing] = useState(false);
+  const [data, setData] = useState(products);
+
+  const handleRefresh = useCallback(async () => {
+    try {
+      setRefreshing(true);
+      if (onRefresh) {
+        onRefresh();
+        setTimeout(()=>setData(products), 1200);
+     
+      } else {
+         setTimeout(()=>'', 1200);
+      }
+    } finally {
+      setRefreshing(false);
+    }
+  }, [onRefresh]);
+
+  useEffect(() => {
+    handleRefresh();
+  }, [data]);
+
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
@@ -17,7 +50,7 @@ export const HomeScreen = ({ products }: HomeScreenprops) => {
       </View>
 
       <FlatList
-        data={products}
+        data={data}
         keyExtractor={(i) => i.id}
         renderItem={({ item, index }) => (
           <ProductCard item={item} index={index} />
@@ -25,6 +58,14 @@ export const HomeScreen = ({ products }: HomeScreenprops) => {
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={[THEME.green]}
+            tintColor={THEME.green}
+          />
+        }
       />
     </SafeAreaView>
   );
@@ -55,22 +96,6 @@ const styles = StyleSheet.create({
     color: THEME.green,
     marginTop: 2,
     fontWeight: "500",
-  },
-  headerButton: {
-    backgroundColor: THEME.green,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 12,
-    shadowColor: THEME.green,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
-  },
-  headerButtonText: {
-    color: "#fff",
-    fontWeight: "700",
-    fontSize: 15,
   },
   listContainer: {
     padding: 12,
