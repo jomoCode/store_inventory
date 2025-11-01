@@ -9,10 +9,12 @@ export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    (async () => {
+    const getProducts = async () => {
       await initDB();
       await getProductsFromDB(setProducts);
-    })();
+    }
+
+    getProducts();
   }, []);
 
   return (
