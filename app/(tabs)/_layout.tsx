@@ -32,12 +32,12 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="admin"
+        name="Admin"
         options={{
           title: "Admin",
           tabBarIcon: ({ color, size, focused }) => (
             <FontAwesome
-              name={focused ? "cog" : "cog"}
+              name={focused ? "user-circle" : "user-circle-o"}
               size={size}
               color={color}
             />
