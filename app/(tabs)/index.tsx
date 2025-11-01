@@ -5,22 +5,31 @@ import { HomeScreen } from "@/components/templates/HomeScreen";
 import { getProductsFromDB, initDB } from "@/lib/DB-helpers";
 import { Product } from "@/lib/types";
 
+const getProducts = async () => {
+  await initDB();
+  const products = await getProductsFromDB();
+  return products;
+};
+
 export default function HomePage() {
-  const [products, setProducts] = useState <Product[]>([]);
-  const [toggle, setToggle] = useState(false)
+  const [products, setProducts] = useState<Product[] | undefined>([]);
 
   useEffect(() => {
-    const getProducts = async () => {
-      await initDB();
-      await getProductsFromDB(setProducts);
-    }
+    const awaitProducts = async () => {
+      const productRows = await getProducts();
+      setProducts(productRows);
+    };
+    awaitProducts();
+  }, []);
 
-    getProducts();
-  }, [toggle]);
+  const awaitProducts = async () => {
+    const productRows = await getProducts();
+    setProducts(productRows);
+  };
 
   return (
     <View style={{ flex: 1 }}>
-      <HomeScreen products={products} onRefresh={()=>setToggle(!toggle)}  />
+      <HomeScreen products={products} onRefresh={awaitProducts} />
     </View>
   );
 }

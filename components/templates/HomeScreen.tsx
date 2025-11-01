@@ -1,7 +1,7 @@
 import { ProductCard } from "@/components/molecules/ProductCard";
 import { THEME } from "@/lib/color-constants";
 import { Product } from "@/lib/types";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   FlatList,
   Platform,
@@ -13,32 +13,21 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type HomeScreenProps = {
-  products: Product[];
-  onRefresh?: () => void;
+  products: Product[] | undefined;
+  onRefresh: () => void;
 };
 
 export const HomeScreen = ({ products, onRefresh }: HomeScreenProps) => {
   const [refreshing, setRefreshing] = useState(false);
-  const [data, setData] = useState(products);
 
   const handleRefresh = useCallback(async () => {
     try {
       setRefreshing(true);
-      if (onRefresh) {
-        onRefresh();
-        setTimeout(()=>setData(products), 1200);
-     
-      } else {
-         setTimeout(()=>'', 1200);
-      }
+      onRefresh();
     } finally {
       setRefreshing(false);
     }
   }, [onRefresh]);
-
-  useEffect(() => {
-    handleRefresh();
-  }, [data]);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -50,7 +39,7 @@ export const HomeScreen = ({ products, onRefresh }: HomeScreenProps) => {
       </View>
 
       <FlatList
-        data={data}
+        data={products}
         keyExtractor={(i) => i.id}
         renderItem={({ item, index }) => (
           <ProductCard item={item} index={index} />

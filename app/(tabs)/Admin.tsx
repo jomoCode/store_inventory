@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 import { View } from "react-native";
 
 export default function AdminPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]|undefined>([]);
 
   useEffect(() => {
     (async () => {
       await initDB();
-      await getProductsFromDB(setProducts);
+      const productFromDb = await getProductsFromDB();
+      setProducts(productFromDb);
     })();
   }, []);
 

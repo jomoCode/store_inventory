@@ -25,8 +25,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ImageInputField } from "../atoms/ImageInput";
 
 type AdminScreenProps = {
-  products: Product[];
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+  products: Product[] | undefined;
+  setProducts: React.Dispatch<React.SetStateAction<Product[] | undefined>>;
 };
 
 export const AdminScreen = ({ products, setProducts }: AdminScreenProps) => {
@@ -99,10 +99,10 @@ export const AdminScreen = ({ products, setProducts }: AdminScreenProps) => {
         price: priceInput,
         image: imageInput,
       };
-      await updateProduct(
-        updated,
-        async () => await getProductsFromDB(setProducts)
-      );
+      await updateProduct(updated, async () => {
+        const productsFromDb = await getProductsFromDB();
+        setProducts(productsFromDb);
+      });
     } else {
       const newProduct: Product = {
         id: makeId(),
@@ -112,10 +112,10 @@ export const AdminScreen = ({ products, setProducts }: AdminScreenProps) => {
           imageInput ||
           "https://images.unsplash.com/photo-1582719478250-0b6c6f6b8d91?auto=format&fit=crop&w=800&q=60",
       };
-      await insertProduct(
-        newProduct,
-        async () => await getProductsFromDB(setProducts)
-      );
+      await insertProduct(newProduct, async () => {
+        const productsFromDb = await getProductsFromDB();
+        setProducts(productsFromDb);
+      });
     }
 
     setModalVisible(false);
@@ -131,10 +131,10 @@ export const AdminScreen = ({ products, setProducts }: AdminScreenProps) => {
           text: "Delete",
           style: "destructive",
           onPress: async () => {
-            await deleteProduct(
-              productId,
-              async () => await getProductsFromDB(setProducts)
-            );
+            await deleteProduct(productId, async () => {
+              const productsFromDb = await getProductsFromDB();
+              setProducts(productsFromDb);
+            });
           },
         },
       ]
@@ -146,7 +146,9 @@ export const AdminScreen = ({ products, setProducts }: AdminScreenProps) => {
       <View style={styles.headerAdmin}>
         <View>
           <Text style={styles.headerTitle}>Admin Panel</Text>
-          <Text style={styles.headerSubtitle}>{products.length} Products</Text>
+          <Text style={styles.headerSubtitle}>
+            {products && products.length} Products
+          </Text>
         </View>
         <TouchableOpacity
           onPress={openAdd}

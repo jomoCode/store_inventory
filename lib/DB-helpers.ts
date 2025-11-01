@@ -10,12 +10,10 @@ async function initDB() {
   );
 }
 
-async function getProductsFromDB(
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>
-) {
+const getProductsFromDB = async () => {
   if (!db) return;
   const rows = await db.getAllAsync<Product>("SELECT * FROM products;");
-  setProducts(rows);
+  return rows;
 }
 
 async function insertProduct(product: Product, callback: () => void) {
